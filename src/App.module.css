@@ -22,6 +22,14 @@
   color: #57606a;
 }
 
+.rendered {
+  padding: 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 16px;
+}
+
 .output pre {
   max-height: 600px;
   overflow: auto;

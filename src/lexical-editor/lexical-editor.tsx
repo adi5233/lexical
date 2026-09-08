@@ -11,32 +11,68 @@ import {HeadingNode} from '@lexical/rich-text';
 import {ListNode, ListItemNode} from '@lexical/list';
 import {LinkNode, AutoLinkNode} from '@lexical/link';
 
-import type {EditorState, SerializedEditorState} from 'lexical';
+import {$generateHtmlFromNodes} from '@lexical/html';
+
+import type {EditorState, LexicalEditor, SerializedEditorState} from 'lexical';
 
 import {ToolbarPlugin} from './plugins/toolbar-plugin';
 // import {LoadContentPlugin} from './plugins/load-content-plugin';
 
 import './lexical-editor.css';
 
+export type EditorContent = {
+  /** Serialized editor state — the source of truth, persist this. */
+  json: SerializedEditorState;
+  /** HTML string — for rendering read-only previews or emailing, NOT for reloading. */
+  html: string;
+};
+
+// Safe fallback: a single empty paragraph. Used whenever no initialContent
+// is passed so LexicalComposer always gets a valid state.
+const EMPTY_CONTENT: SerializedEditorState = {
+  root: {
+    children: [
+      {
+        children: [],
+        direction: null,
+        format: '',
+        indent: 0,
+        type: 'paragraph',
+        version: 1,
+      },
+    ],
+    direction: null,
+    format: '',
+    indent: 0,
+    type: 'root',
+    version: 1,
+  },
+} as unknown as SerializedEditorState;
+
 type EditorProps = {
   initialContent?: SerializedEditorState;
-  onChange?: (content: SerializedEditorState) => void;
+  onChange?: (content: EditorContent) => void;
 };
 
 export default function Editor({initialContent, onChange}: EditorProps) {
   const initialConfig = {
     namespace: 'ArticleEditor',
-    editorState: initialContent ? JSON.stringify(initialContent) : undefined,
+    editorState: JSON.stringify(initialContent ?? EMPTY_CONTENT),
     nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, AutoLinkNode],
     onError(error: Error) {
       console.error(error);
     },
   };
 
-  const handleChange = (editorState: EditorState) => {
-    const json = editorState.toJSON();
-    console.log('New content:', json);
-    onChange?.(json);
+  // OnChangePlugin passes (editorState, editor). `$generateHtmlFromNodes` needs
+  // the editor instance and must run inside `editorState.read()`.
+  const handleChange = (editorState: EditorState, editor: LexicalEditor) => {
+    editorState.read(() => {
+      onChange?.({
+        json: editorState.toJSON(),
+        html: $generateHtmlFromNodes(editor, null),
+      });
+    });
   };
 
   return (
