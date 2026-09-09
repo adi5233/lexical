@@ -74,8 +74,8 @@ export function LinkEditorPlugin() {
     });
   };
 
-  const handleApply = () => {
-    const trimmedUrl = url.trim();
+  const handleApply = (nextUrl: string) => {
+    const trimmedUrl = nextUrl.trim();
 
     if (!trimmedUrl) {
       return;
