@@ -27,8 +27,8 @@ import {$isLinkNode, TOGGLE_LINK_COMMAND} from '@lexical/link';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$createHeadingNode, $isHeadingNode} from '@lexical/rich-text';
 
-import {ToolbarButton} from './toolbar-button';
-import {OPEN_LINK_EDITOR_COMMAND} from './commands';
+import {ToolbarButton} from './components/toolbar-button';
+import {OPEN_LINK_EDITOR_COMMAND} from './commands/commands';
 
 type BlockType = 'paragraph' | 'h1' | 'h2' | 'h3';
 
