@@ -69,3 +69,47 @@
   color: #9ca3af;
   pointer-events: none;
 }
+
+.link-popover {
+  position: absolute;
+  top: 48px;
+  right: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 300px;
+  padding: 12px;
+
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  z-index: 10;
+}
+
+.link-popover input {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 8px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.link-popover-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.link-popover button {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}

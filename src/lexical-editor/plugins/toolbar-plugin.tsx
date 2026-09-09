@@ -1,7 +1,5 @@
 import {useEffect, useState} from 'react';
 
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-
 import {
   $getSelection,
   $isRangeSelection,
@@ -19,18 +17,18 @@ import {
 } from 'lexical';
 import {$setBlocksType} from '@lexical/selection';
 
-import {$createHeadingNode, $isHeadingNode} from '@lexical/rich-text';
-
 import {
   $isListNode,
+  REMOVE_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
   INSERT_ORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND,
 } from '@lexical/list';
-
 import {$isLinkNode, TOGGLE_LINK_COMMAND} from '@lexical/link';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {$createHeadingNode, $isHeadingNode} from '@lexical/rich-text';
 
 import {ToolbarButton} from './toolbar-button';
+import {OPEN_LINK_EDITOR_COMMAND} from './commands';
 
 type BlockType = 'paragraph' | 'h1' | 'h2' | 'h3';
 
@@ -251,13 +249,7 @@ export function ToolbarPlugin() {
   // Links
   // ---------------------------------------
   const insertLink = () => {
-    const url = window.prompt('Enter URL', linkUrl ?? '');
-
-    if (!url) {
-      return;
-    }
-
-    editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+    editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, linkUrl);
   };
 
   const removeLink = () => {

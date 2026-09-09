@@ -10,14 +10,13 @@ import {LexicalErrorBoundary} from '@lexical/react/LexicalErrorBoundary';
 import {HeadingNode} from '@lexical/rich-text';
 import {ListNode, ListItemNode} from '@lexical/list';
 import {LinkNode, AutoLinkNode} from '@lexical/link';
-
 import {$generateHtmlFromNodes} from '@lexical/html';
-
 import type {EditorState, LexicalEditor, SerializedEditorState} from 'lexical';
 
 import {ToolbarPlugin} from './plugins/toolbar-plugin';
 // import {LoadContentPlugin} from './plugins/load-content-plugin';
 
+import {LinkEditorPlugin} from './plugins/link-editor-plugin';
 import './lexical-editor.css';
 
 export type EditorContent = {
@@ -79,7 +78,6 @@ export default function Editor({initialContent, onChange}: EditorProps) {
     <LexicalComposer initialConfig={initialConfig}>
       <div className="editor-wrapper">
         <ToolbarPlugin />
-
         <div className="editor-container">
           <RichTextPlugin
             contentEditable={
@@ -93,10 +91,10 @@ export default function Editor({initialContent, onChange}: EditorProps) {
             }
             ErrorBoundary={LexicalErrorBoundary}
           />
-
           <HistoryPlugin />
           <ListPlugin />
           <LinkPlugin />
+          <LinkEditorPlugin />
           {/* <LoadContentPlugin content={initialContent} /> */}
           <OnChangePlugin onChange={handleChange} />
         </div>
